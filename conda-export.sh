@@ -40,13 +40,13 @@ if [[ "${ARG__debug}" == "true" ]]; then
     set -x
 fi
 
+if [[ -n "${ARG__dir}" ]]; then
+    cd "${ARG__dir}"
+fi
+
 if [[ -z "${CONDA_DEFAULT_ENV:-}" ]]; then
     echo "No active conda environment."
     exit 1
-fi
-
-if [[ -n "${ARG__dir}" ]]; then
-    cd "${ARG__dir}"
 fi
 
 conda env export --file "${ARG__env_pth}" "${ARG_export_options_[@]}"

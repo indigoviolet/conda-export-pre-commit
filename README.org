@@ -7,6 +7,7 @@ In ~.pre-commit-config.yaml~:
 #+begin_example yaml
 repos:
   - repo: https://github.com/indigoviolet/conda-export-pre-commit
+    rev: v1.0
     hooks:
       - id: conda-export
         args: ["--dir", "./subdirectory", "--", "--from-history"]
