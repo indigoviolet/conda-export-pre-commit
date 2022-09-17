@@ -10,15 +10,23 @@ repos:
     rev: v1.0
     hooks:
       - id: conda-export
-        args: ["--dir", "./subdirectory", "--", "--from-history"]
 #+end_example
 
 * Options
 
 Default behavior is to update ~environment.yml~ for the currently active
-environment and then fail the hook if files are changed (so that it can be added
-to the commit).
+environment.
 
+This can be changed by passing ~args~, for ex:
+
+#+begin_example yaml
+        args: ["--file", "./subdir/environment.yml", "--env", "./subdir/.venv", "--", "--from-history"]
+#+end_example
+
+Note that we can also pass options to ~conda env export~ (~-- --from-history~ in this example).
+
+We fail the hook if files are changed (so that it can be added to the commit),
+which can be override by ~--pass-if-modified~.
 
 #+begin_example shell
 ❯ ./conda-export.sh --help
@@ -30,8 +38,8 @@ Usage:
 Options:
   -h, --help                               Show this help message
   -v, --version                            Show version
-  -d <dir>, --dir <dir>                    Execute in directory
-  -e <yml file>, --env_pth <yml file>      Path to exported env file. [default: environment.yml]
+  -f <yml file>, --file <yml file>         Path to exported env file. [default: environment.yml]
+  -e <env>, --env <env>                    Conda env to activate
   -p, --pass-if-modified                   Pass hook even if it modified the yml file
   --debug                                  Debug [default: false]
 

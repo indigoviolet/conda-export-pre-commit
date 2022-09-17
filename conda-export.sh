@@ -11,8 +11,8 @@ Usage:
 Options:
   -h, --help                               Show this help message
   -v, --version                            Show version
-  -d <dir>, --dir <dir>                    Execute in directory
-  -e <yml file>, --env_pth <yml file>      Path to exported env file. [default: environment.yml]
+  -f <yml file>, --file <yml file>         Path to exported env file. [default: environment.yml]
+  -e <env>, --env <env>                    Conda env to activate
   -p, --pass-if-modified                   Pass hook even if it modified the yml file
   --debug                                  Debug [default: false]
 
@@ -34,14 +34,15 @@ if [[ "${ARG__debug}" == "true" ]]; then
     echo "--debug: $ARG__debug"
     echo "--: $ARG__"
     echo "export_options: ${ARG_export_options_[@]}"
-    echo "--dir: $ARG__dir"
-    echo "--env_pth: $ARG__env_pth"
+    echo "--env: $ARG__env"
+    echo "--file: $ARG__file"
     echo "--pass-if-modified: $ARG__pass_if_modified"
     set -x
 fi
 
-if [[ -n "${ARG__dir}" ]]; then
-    cd "${ARG__dir}"
+if [[ -n "${ARG__env}" ]]; then
+    source "$(conda info --base)"/etc/profile.d/conda.sh
+    conda activate "${ARG__env}"
 fi
 
 if [[ -z "${CONDA_DEFAULT_ENV:-}" ]]; then
@@ -49,10 +50,10 @@ if [[ -z "${CONDA_DEFAULT_ENV:-}" ]]; then
     exit 1
 fi
 
-conda env export --file "${ARG__env_pth}" "${ARG_export_options_[@]}"
+conda env export --file "${ARG__file}" "${ARG_export_options_[@]}"
 
 if [[ "${ARG__pass_if_modified}" == "true" ]]; then
     exit 0
 fi
 
-(git ls-files --error-unmatch "${ARG__env_pth}" && git diff --exit-code "${ARG__env_pth}") 2>/dev/null
+(git ls-files --error-unmatch "${ARG__file}" && git diff --exit-code "${ARG__file}") 2>/dev/null

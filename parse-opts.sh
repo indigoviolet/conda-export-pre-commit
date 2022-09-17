@@ -272,50 +272,50 @@ Run \`docopt.sh\` to refresh the parser."
 		exit "$1"
 	}
 	set -e
-	trimmed_doc=${DOC:1:600}
+	trimmed_doc=${DOC:1:601}
 	usage=${DOC:16:61}
-	digest=1ee3c
-	shorts=(-h -p '' -v -d -e)
-	longs=(--help --pass-if-modified --debug --version --dir --env_pth)
-	argcounts=(0 0 0 0 1 1)
-	node_0() { switch __help 0; }
+	digest=4305c
+	shorts=(-p -f -e -v -h '')
+	longs=(--pass-if-modified --file --env --version --help --debug)
+	argcounts=(0 1 1 0 0 0)
+	node_0() { switch __pass_if_modified 0; }
 	node_1() {
-		switch __pass_if_modified 1
+		value __file 1
 	}
-	node_2() { switch __debug 2; }
-	node_3() {
-		switch __version 3
+	node_2() { value __env 2; }
+	node_3() { switch __version 3; }
+	node_4() { switch __help 4; }
+	node_5() { switch __debug 5; }
+	node_6() {
+		value _export_options_ a true
 	}
-	node_4() { value __dir 4; }
-	node_5() {
-		value __env_pth 5
-	}
-	node_6() { value _export_options_ a true; }
 	node_7() { _command __ --; }
-	node_8() { optional 0 1 2 3 4 5; }
-	node_9() { optional 8; }
-	node_10() {
-		oneormore 6
+	node_8() {
+		optional 0 1 2 3 4 5
 	}
+	node_9() { optional 8; }
+	node_10() { oneormore 6; }
 	node_11() { optional 7 10; }
 	node_12() { required 9 11; }
-	node_13() { required 12; }
-	cat <<<' docopt_exit() {
-[[ -n $1 ]] && printf "%s\n" "$1" >&2; printf "%s\n" "${DOC:16:61}" >&2; exit 1
-}'
-	unset var___help var___pass_if_modified var___debug var___version \
-		var___dir var___env_pth var__export_options_ var___
+	node_13() {
+		required 12
+	}
+	cat <<<' docopt_exit() { [[ -n $1 ]] && printf "%s\n" "$1" >&2
+printf "%s\n" "${DOC:16:61}" >&2; exit 1; }'
+	unset var___pass_if_modified \
+		var___file var___env var___version var___help var___debug var__export_options_ \
+		var___
 	parse 13 "$@"
 	local prefix=${DOCOPT_PREFIX:-''}
-	unset "${prefix}__help" \
-		"${prefix}__pass_if_modified" "${prefix}__debug" "${prefix}__version" \
-		"${prefix}__dir" "${prefix}__env_pth" "${prefix}_export_options_" "${prefix}__"
-	eval "${prefix}"'__help=${var___help:-false}'
+	unset "${prefix}__pass_if_modified" "${prefix}__file" "${prefix}__env" \
+		"${prefix}__version" "${prefix}__help" "${prefix}__debug" \
+		"${prefix}_export_options_" "${prefix}__"
 	eval "${prefix}"'__pass_if_modified=${var___pass_if_modified:-false}'
-	eval "${prefix}"'__debug=${var___debug:-false}'
+	eval "${prefix}"'__file=${var___file:-environment.yml}'
+	eval "${prefix}"'__env=${var___env:-}'
 	eval "${prefix}"'__version=${var___version:-false}'
-	eval "${prefix}"'__dir=${var___dir:-}'
-	eval "${prefix}"'__env_pth=${var___env_pth:-environment.yml}'
+	eval "${prefix}"'__help=${var___help:-false}'
+	eval "${prefix}"'__debug=${var___debug:-false}'
 	if declare -p var__export_options_ >/dev/null 2>&1; then
 		eval "${prefix}"'_export_options_=("${var__export_options_[@]}")'
 	else
@@ -324,9 +324,7 @@ Run \`docopt.sh\` to refresh the parser."
 	eval "${prefix}"'__=${var___:-false}'
 	local docopt_i=1
 	[[ $BASH_VERSION =~ ^4.3 ]] && docopt_i=2
-	for (( ; docopt_i > 0; docopt_i--)); do
-		declare -p "${prefix}__help" \
-			"${prefix}__pass_if_modified" "${prefix}__debug" "${prefix}__version" \
-			"${prefix}__dir" "${prefix}__env_pth" "${prefix}_export_options_" "${prefix}__"
-	done
+	for (( ; docopt_i > 0; docopt_i--)); do declare -p "${prefix}__pass_if_modified" \
+		"${prefix}__file" "${prefix}__env" "${prefix}__version" "${prefix}__help" \
+		"${prefix}__debug" "${prefix}_export_options_" "${prefix}__"; done
 }
