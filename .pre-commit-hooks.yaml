@@ -5,4 +5,4 @@
   entry: conda-export.sh
   always_run: true
   pass_filenames: false
-  args: ["--env_pth", "environment.yml", "--", "--from-history"]
+  args: ["--dir", ".", "--", "--from-history"]

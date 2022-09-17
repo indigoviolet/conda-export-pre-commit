@@ -1,1 +1,38 @@
 [[https://pre-commit.com/][pre-commit]] hook that exports the conda environment.
+
+* Usage
+
+In ~.pre-commit-config.yaml~:
+
+#+begin_example yaml
+repos:
+  - repo: https://github.com/indigoviolet/conda-export-pre-commit
+    hooks:
+      - id: conda-export
+        args: ["--dir", "./subdirectory", "--", "--from-history"]
+#+end_example
+
+* Options
+
+Default behavior is to update ~environment.yml~ for the currently active
+environment and then fail the hook if files are changed (so that it can be added
+to the commit).
+
+
+#+begin_example shell
+❯ ./conda-export.sh --help
+Conda Export.
+
+Usage:
+  conda-export.sh [options] [ -- <export_options>... ]
+
+Options:
+  -h, --help                               Show this help message
+  -v, --version                            Show version
+  -d <dir>, --dir <dir>                    Execute in directory
+  -e <yml file>, --env_pth <yml file>      Path to exported env file. [default: environment.yml]
+  -p, --pass-if-modified                   Pass hook even if it modified the yml file
+  --debug                                  Debug [default: false]
+
+<export_options> specified after -- are passed through to 'conda env export'.
+#+end_example
