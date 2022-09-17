@@ -1,0 +1,1 @@
+[[https://pre-commit.com/][pre-commit]] hook that exports the conda environment.
