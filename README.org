@@ -7,7 +7,7 @@ In ~.pre-commit-config.yaml~:
 #+begin_example yaml
 repos:
   - repo: https://github.com/indigoviolet/conda-export-pre-commit
-    rev: v1.0
+    rev: v1.0.1
     hooks:
       - id: conda-export
 #+end_example
